@@ -1,23 +1,32 @@
-import time
+# Import the requests, subprocess and sys modules
 import requests
-import os
+import subprocess
+import sys
 
-# Print "Updating.." for 10 seconds
-print("Updating..", end="")
-for i in range(10):
-    time.sleep(1)
-    print(".", end="")
+# Define the URLs of the update scripts
+latest_url = "https://raw.githubusercontent.com/Jack-John-Joe/updato/main/updates/latest.py"
+windows11_url = "https://raw.githubusercontent.com/Jack-John-Joe/updato/main/updates/11.py"
 
-# Download the latest update .py file from the given URL
-url = "https://raw.githubusercontent.com/Jack-John-Joe/updato/main/updates/latest.py"
-response = requests.get(url)
-if response.status_code == 200:
-    # Save the file to the current directory
+# Ask the user to choose between the latest update or windows 11
+choice = input("Do you want to download the latest update or windows 11? (L/W) ")
+
+# Download and run the corresponding script based on the user's choice
+if choice.upper() == "L":
+    # Download the latest update script as a binary file
+    response = requests.get(latest_url)
     filename = "latest.py"
-    with open(filename, "w") as f:
-        f.write(response.text)
-    # Run the file using os.system
-    os.system(f"python {filename}")
+    with open(filename, "wb") as file:
+        file.write(response.content)
+    # Run the latest update script using subprocess
+    subprocess.run([sys.executable, filename])
+elif choice.upper() == "W":
+    # Download the windows 11 script as a binary file
+    response = requests.get(windows11_url)
+    filename = "11.py"
+    with open(filename, "wb") as file:
+        file.write(response.content)
+    # Run the windows 11 script using subprocess
+    subprocess.run([sys.executable, filename])
 else:
-    # Handle the error
-    print(f"\nError: Failed to download the file from {url}")
+    # Print an error message if the user's choice is invalid
+    print("Invalid choice. Please enter L or W.")

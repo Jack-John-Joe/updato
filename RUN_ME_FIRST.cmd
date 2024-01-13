@@ -1,2 +1,5 @@
+@echo off
+echo Getting Ready..
+timeout /t 5 /nobreak >nul
 REM Open update.ps1 using powershell
-powershell -File update.ps1
+exit
